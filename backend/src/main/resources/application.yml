@@ -1,0 +1,88 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: admin-system
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${env.DB_HOST:${DB_HOST:localhost}}:${env.DB_PORT:${DB_PORT:3306}}/${env.DB_NAME:${DB_NAME:reg_zhishiku}}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${env.DB_USERNAME:${DB_USERNAME:root}}
+    password: ${env.DB_PASSWORD:${DB_PASSWORD:}}
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  data:
+    redis:
+      host: ${env.REDIS_HOST:${REDIS_HOST:localhost}}
+      port: ${env.REDIS_PORT:${REDIS_PORT:6379}}
+      database: ${env.REDIS_DATABASE:${REDIS_DATABASE:0}}
+      timeout: 3000
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.admin.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  secret: ${env.JWT_SECRET:${JWT_SECRET:}}
+  expiration: 86400000
+
+spring.servlet.multipart:
+  max-file-size: 50MB
+  max-request-size: 100MB
+
+file:
+  storage-type: LOCAL
+  local-path: ./uploads
+  url-prefix: /uploads
+  max-size: 50
+  allowed-extensions: jpg,jpeg,png,gif,bmp,webp,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,md,csv,zip,rar,7z,mp4,mp3
+
+ai:
+  model:
+    base-url: ${env.AI_BASE_URL:${AI_BASE_URL:}}
+    api-key: ${env.AI_API_KEY:${AI_API_KEY:}}
+    model-name: ${env.AI_MODEL_NAME:${AI_MODEL_NAME:deepseek-v3.2}}
+    temperature: 0.7
+    max-tokens: 2048
+  embedding:
+    type: ${env.EMBEDDING_TYPE:${EMBEDDING_TYPE:local}}
+    base-url: ${env.EMBEDDING_BASE_URL:${EMBEDDING_BASE_URL:}}
+    api-key: ${env.EMBEDDING_API_KEY:${EMBEDDING_API_KEY:}}
+    model-name: ${env.EMBEDDING_MODEL_NAME:${EMBEDDING_MODEL_NAME:text-embedding-v1}}
+  vector-store:
+    type: ${env.VECTOR_STORE_TYPE:${VECTOR_STORE_TYPE:milvus}}
+  milvus:
+    host: ${env.MILVUS_HOST:${MILVUS_HOST:localhost}}
+    port: ${env.MILVUS_PORT:${MILVUS_PORT:19530}}
+    collection-name: ${env.MILVUS_COLLECTION_NAME:${MILVUS_COLLECTION_NAME:kb_chunks}}
+    dimension: ${env.MILVUS_DIMENSION:${MILVUS_DIMENSION:1024}}
+  rag:
+    query-rewrite:
+      enabled: ${env.QUERY_REWRITE_ENABLED:${QUERY_REWRITE_ENABLED:true}}
+    hybrid:
+      vector-top-k: ${env.RAG_VECTOR_TOP_K:${RAG_VECTOR_TOP_K:10}}
+      keyword-top-k: ${env.RAG_KEYWORD_TOP_K:${RAG_KEYWORD_TOP_K:10}}
+      final-top-k: ${env.RAG_FINAL_TOP_K:${RAG_FINAL_TOP_K:5}}
+      vector-weight: ${env.RAG_VECTOR_WEIGHT:${RAG_VECTOR_WEIGHT:0.65}}
+      keyword-weight: ${env.RAG_KEYWORD_WEIGHT:${RAG_KEYWORD_WEIGHT:0.35}}
+      min-vector-score: ${env.RAG_MIN_VECTOR_SCORE:${RAG_MIN_VECTOR_SCORE:0.3}}
+
+logging:
+  level:
+    com.admin: debug
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enable-swagger-models: true
+    enable-document-manage: true
+
+kb:
+  index:
+    on-startup: ${env.KB_INDEX_ON_STARTUP:${KB_INDEX_ON_STARTUP:false}}
+    startup-mode: ${env.KB_INDEX_STARTUP_MODE:${KB_INDEX_STARTUP_MODE:MISSING_ONLY}}

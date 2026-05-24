@@ -1,0 +1,39 @@
+{
+  "generatedAt" : "2026-05-22T14:45:57.053995700",
+  "caseCount" : 86,
+  "rounds" : 3,
+  "samples" : 258,
+  "scope" : "Production hybrid retrieval cache. Each sample evicts rag:topk:, runs one cold query, then repeats the same query as warm cache.",
+  "coldP50LatencyMs" : 163,
+  "warmP50LatencyMs" : 0,
+  "p50ReductionPercent" : 100.0,
+  "coldP95LatencyMs" : 277,
+  "warmP95LatencyMs" : 1,
+  "p95ReductionPercent" : 99.64,
+  "sameTopResultsPercent" : 100.0,
+  "byQuestionType" : [ {
+    "questionType" : "direct",
+    "samples" : 192,
+    "coldP95LatencyMs" : 314,
+    "warmP95LatencyMs" : 1,
+    "p95ReductionPercent" : 99.68
+  }, {
+    "questionType" : "synonym",
+    "samples" : 24,
+    "coldP95LatencyMs" : 266,
+    "warmP95LatencyMs" : 1,
+    "p95ReductionPercent" : 99.62
+  }, {
+    "questionType" : "fuzzy",
+    "samples" : 18,
+    "coldP95LatencyMs" : 190,
+    "warmP95LatencyMs" : 1,
+    "p95ReductionPercent" : 99.47
+  }, {
+    "questionType" : "followup",
+    "samples" : 24,
+    "coldP95LatencyMs" : 208,
+    "warmP95LatencyMs" : 0,
+    "p95ReductionPercent" : 100.0
+  } ]
+}

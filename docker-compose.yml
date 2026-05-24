@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # ============ Backend (Spring Boot) ============
+  backend:
+    build: ./backend
+    container_name: gongdan-backend
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      AI_BASE_URL: ${AI_BASE_URL}
+      AI_API_KEY: ${AI_API_KEY}
+      AI_MODEL_NAME: ${AI_MODEL_NAME}
+      EMBEDDING_TYPE: ${EMBEDDING_TYPE:-local}
+      EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-}
+      EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+      EMBEDDING_MODEL_NAME: ${EMBEDDING_MODEL_NAME:-text-embedding-v1}
+    volumes:
+      - ./backend/uploads:/app/uploads
+    networks:
+      - gongdan-net
+
+  # ============ Frontend (Vue3 + Nginx) ============
+  frontend:
+    build: ./frontend
+    container_name: gongdan-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3313:80"
+    networks:
+      - gongdan-net
+
+networks:
+  gongdan-net:
+    driver: bridge
